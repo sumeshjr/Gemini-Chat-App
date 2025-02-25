@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gemini Chat - File Upload Supported</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #chat-container {
+            width: 800px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        #chat-box {
+            height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            width: fit-content;
+            max-width: 75%;
+            word-wrap: break-word;
+        }
+
+        .user {
+            background-color: #d0e6ff;
+            margin-left: auto;
+            text-align: right;
+        }
+
+        .bot {
+            background-color: #e8ffe8;
+            margin-right: auto;
+            text-align: left;
+        }
+
+        #user-input,
+        #file-upload {
+            width: 70%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        #send-btn {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        #send-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="chat-container">
+        <h2>🤖 Gemini Chat - Upload PDF, PPT, TXT & Chat</h2>
+        <input type="file" id="file-upload" accept=".pdf,.pptx,.txt">
+        <div id="chat-box"></div>
+        <input type="text" id="user-input" placeholder="Type your message here...">
+        <button id="send-btn" onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+        // Fetch previous chat history
+        window.onload = async function () {
+            try {
+                const res = await fetch('/get-chat-history/');
+                const chats = await res.json();
+                chats.forEach(chat => {
+                    appendMessage(chat.user_message, 'user');
+                    appendMessage(chat.ai_response, 'bot');
+                });
+            } catch (error) {
+                appendMessage('⚠️ Failed to load previous chats.', 'bot');
+            }
+        };
+
+        function appendMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message ' + sender;
+            messageDiv.textContent = text;
+            document.getElementById('chat-box').appendChild(messageDiv);
+            document.getElementById('chat-box').scrollTop = document.getElementById('chat-box').scrollHeight;
+        }
+
+        async function sendMessage() {
+            const userInput = document.getElementById('user-input');
+            const fileInput = document.getElementById('file-upload');
+            const message = userInput.value.trim();
+
+            if (message === '' && fileInput.files.length === 0) {
+                alert("Please enter a message or upload a file.");
+                return;
+            }
+            appendMessage(message, 'user');
+            userInput.value = '';
+
+            const formData = new FormData();
+            formData.append('message', message);
+            if (fileInput.files.length > 0) formData.append('uploadedFile', fileInput.files[0]);
+            appendMessage("Processing... 🔄", 'bot');
+
+            try {
+                const response = await fetch('/get-response/', { method: 'POST', body: formData });
+                const data = await response.json();
+                document.querySelectorAll('.bot').forEach(msg => { if (msg.textContent === 'Processing... 🔄') msg.remove(); });
+                appendMessage(data.response || '⚡ Error: No response from AI.', 'bot');
+            } catch (error) {
+                appendMessage('❌ Error while fetching response.', 'bot');
+            }
+        }
+
+        document.getElementById('user-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+</body>
+
+</html>
