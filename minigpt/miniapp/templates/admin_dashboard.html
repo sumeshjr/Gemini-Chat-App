@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+        header { background-color: #333; color: white; padding: 15px; text-align: center; }
+        nav a { color: white; margin: 0 15px; text-decoration: none; }
+        .container { padding: 20px; }
+        .profile-card { border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin-bottom: 20px; display: flex; align-items: center; }
+        .profile-card img { border-radius: 50%; width: 100px; height: 100px; object-fit: cover; margin-right: 20px; }
+        .premium { color: green; font-weight: bold; }
+        .expired { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Admin Dashboard</h1>
+        <nav>
+            <a href="{% url 'adminDashboard' %}">Dashboard</a>
+            <a href="{% url 'viewAllUsers' %}">User Management</a>
+            <a href="{% url 'logout' %}">Logout</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h2>User Profiles</h2>
+        {% for profile in profiles %}
+            <div class="profile-card">
+                {% if profile.profile_picture %}
+                    <img src="{{ profile.profile_picture.url }}" alt="Profile Picture">
+                {% else %}
+                    <img src="{% static 'images/default-profile.png' %}" alt="Default Profile">
+                {% endif %}
+                <div>
+                    <h3>{{ profile.user.username }}</h3>
+                    <p><strong>Email:</strong> {{ profile.user.email }}</p>
+                    <p><strong>Bio:</strong> {{ profile.bio|default:"No bio available." }}</p>
+                    {% if profile.is_premium %}
+                        <p class="premium">Premium Member (Expires: {{ profile.premium_expiry|date:"F j, Y" }})</p>
+                    {% else %}
+                        <p class="expired">Standard User</p>
+                    {% endif %}
+                </div>
+            </div>
+        {% empty %}
+            <p>No user profiles found.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>

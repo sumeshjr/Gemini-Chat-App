@@ -1,4 +1,5 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect , get_object_or_404
+from django.utils.dateparse import parse_datetime
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -56,12 +57,15 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+            if user.is_superuser:
+                return redirect('adminDashboard')
             return redirect('index')
         else:
             messages.error(request, 'Invalid username or password.')
             return redirect('login')
 
     return render(request, 'login.html')
+
 
 def get_chat_history(request):
     chats = ChatHistory.objects.filter(user=request.user).values('user_message', 'ai_response', 'timestamp')
@@ -131,3 +135,53 @@ def logout_view(request):
     logout(request)
     return redirect('login')
 #-------------------------------------------------------------------------------------------------------------------
+
+#----------------------------------------------------------Admin---------------------------------------------------
+def admin_dashboard_view(request):
+    profiles = Profile.objects.select_related('user').all()
+    return render(request, 'admin_dashboard.html', {'profiles': profiles})
+
+
+def view_all_users(request):
+    users = User.objects.all().select_related('profile')
+    return render(request, 'view_all_users.html', {'users': users})
+
+def update_user(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    profile = get_object_or_404(Profile, user=user)
+
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        bio = request.POST.get('bio')
+        is_premium = request.POST.get('is_premium') == 'on'
+        premium_expiry = request.POST.get('premium_expiry')
+        profile_picture = request.FILES.get('profile_picture')
+
+        # Update user fields
+        user.username = username
+        user.email = email
+        user.save()
+
+        # Update profile fields
+        profile.bio = bio
+        profile.is_premium = is_premium
+        profile.premium_expiry = parse_datetime(premium_expiry) if premium_expiry else None
+        if profile_picture:
+            profile.profile_picture = profile_picture
+        profile.save()
+
+        messages.success(request, 'User updated successfully.')
+        return redirect('viewAllUsers')
+
+    return render(request, 'update_user.html', {'user_obj': user, 'profile': profile})
+
+def delete_user(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    if request.method == 'POST':
+        user.delete()
+        messages.success(request, 'User deleted successfully.')
+        return redirect('viewAllUsers')
+    return render(request, 'confirm_delete.html', {'user_obj': user})
+
+#-----------------------------------------------------------------------------------------------------------------
