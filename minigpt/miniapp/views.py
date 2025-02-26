@@ -125,7 +125,7 @@ def chat_response(request):
 
 #-----------------------------------------------------Common----------------------------------------------------------
 def index(request):
-    return render(request, 'index.html')
+    return render(request, 'temp.html')
 
 def logout_view(request):
     logout(request)
