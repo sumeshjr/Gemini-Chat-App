@@ -1,146 +1,254 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Gemini Chat - File Upload Supported</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-
-        #chat-container {
-            width: 800px;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        #chat-box {
-            height: 400px;
-            overflow-y: auto;
-            border: 1px solid #ddd;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-        }
-
-        .message {
-            margin-bottom: 15px;
-            padding: 10px;
-            border-radius: 8px;
-            width: fit-content;
-            max-width: 75%;
-            word-wrap: break-word;
-        }
-
-        .user {
-            background-color: #d0e6ff;
-            margin-left: auto;
-            text-align: right;
-        }
-
-        .bot {
-            background-color: #e8ffe8;
-            margin-right: auto;
-            text-align: left;
-        }
-
-        #user-input,
-        #file-upload {
-            width: 70%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-top: 10px;
-        }
-
-        #send-btn {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-left: 10px;
-        }
-
-        #send-btn:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <title>Global</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="HTML5 website template">
+    <meta name="keywords" content="global, template, html, sass, jquery">
+    <meta name="author" content="Bucky Maler">
+    <link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
 </head>
 
 <body>
-    <div id="chat-container">
-        <h2>🤖 Gemini Chat - Upload PDF, PPT, TXT & Chat</h2>
-        <input type="file" id="file-upload" accept=".pdf,.pptx,.txt">
-        <div id="chat-box"></div>
-        <input type="text" id="user-input" placeholder="Type your message here...">
-        <button id="send-btn" onclick="sendMessage()">Send</button>
+
+    <!-- notification for small viewports and landscape oriented smartphones -->
+    <div class="device-notification">
+        <a class="device-notification--logo" href="#0">
+            <img src="{% static 'assets/img/logo.png' %}" alt="Global">
+            <p>Global</p>
+        </a>
+        <p class="device-notification--message">Global has so much to offer that we must request you orient your device
+            to portrait or find a larger screen. You won't be disappointed.</p>
     </div>
 
+    <div class="perspective effect-rotate-left">
+        <div class="container">
+            <div class="outer-nav--return"></div>
+            <div id="viewport" class="l-viewport">
+                <div class="l-wrapper">
+                    <header class="header">
+                        <a class="header--logo" href="#0">
+                            <img src="{% static 'assets/img/logo.png' %}" alt="Global">
+                            <p>Global</p>
+                        </a>
+                        <button class="header--cta cta">Mini Gpt</button>
+                        <div class="header--nav-toggle">
+                            <span></span>
+                        </div>
+                    </header>
+                    <nav class="l-side-nav">
+                        <ul class="side-nav">
+                            <li class="is-active"><span>Home</span></li>
+                            <li><span>Works</span></li>
+                            <li><span>About</span></li>
+                            <li><span>Contact</span></li>
+                            <li><span>Logout</span></li>
+                        </ul>
+                    </nav>
+                    <ul class="l-main-content main-content">
+                        <li class="l-section section section--is-active">
+                            <div class="intro">
+                                <div class="intro--banner">
+                                    <h1>Your next<br>interactive<br>experience</h1>
+                                    <button class="cta">Chat
+                                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                            viewBox="0 0 150 118" style="enable-background:new 0 0 150 118;"
+                                            xml:space="preserve">
+                                            <g transform="translate(0.000000,118.000000) scale(0.100000,-0.100000)">
+                                                <path
+                                                    d="M870,1167c-34-17-55-57-46-90c3-15,81-100,194-211l187-185l-565-1c-431,0-571-3-590-13c-55-28-64-94-18-137c21-20,33-20,597-20h575l-192-193C800,103,794,94,849,39c20-20,39-29,61-29c28,0,63,30,298,262c147,144,272,271,279,282c30,51,23,60-219,304C947,1180,926,1196,870,1167z" />
+                                            </g>
+                                        </svg>
+                                        <span class="btn-background"></span>
+                                    </button>
+                                    <img src="{% static 'assets/img/introduction-visual.png' %}" alt="Welcome">
+                                </div>
+
+                            </div>
+                        </li>
+                        <li class="l-section section">
+                            <div class="work">
+                                <br><br>
+                                <div id="chat-container"
+                                    style="width: 100%; max-width: 600px; margin: 20px auto; padding: 20px; background: #2a2a40; border-radius: 15px; box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.3);">
+                                    <h2 style="text-align: center; color: #d1d1e0; font-weight: 500;">🤖 Gemini Chat -
+                                        Upload PDF, PPT, TXT & Chat</h2>
+
+                                    <input type="file" id="file-upload" accept=".pdf,.pptx,.txt"
+                                        style="width: 100%; margin-bottom: 15px; padding: 12px; border: 1px solid #444; border-radius: 10px; background-color: #1e1e2f; color: #fff;">
+
+                                    <div id="chat-box"
+                                        style="height: 350px; overflow-y: auto; border: 1px solid #444; padding: 15px; background-color: #1e1e2f; border-radius: 10px; margin-bottom: 15px; scroll-behavior: smooth;">
+                                    </div>
+
+                                    <input type="text" id="user-input" placeholder="Type your message here..."
+                                        style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #444; border-radius: 10px; background-color: #1e1e2f; color: #fff;">
+
+                                    <button id="send-btn" onclick="sendMessage()"
+                                        style="width: 100%; padding: 12px; border: none; border-radius: 10px; background-color: #ffffff; color: #1e1e2f; font-weight: bold; font-size: 16px; letter-spacing: 1px; cursor: pointer; transition: background-color 0.3s;">
+                                        🚀 Send
+                                    </button>
+                                </div>
+
+                                <script>
+                                    // ⬇️ Append messages to the chat box
+                                    function appendMessage(text, sender) {
+                                        const messageDiv = document.createElement('div');
+                                        messageDiv.className = 'message ' + sender;
+                                        messageDiv.textContent = text;
+                                        document.getElementById('chat-box').appendChild(messageDiv);
+                                        document.getElementById('chat-box').scrollTop = document.getElementById('chat-box').scrollHeight;
+                                    }
+
+                                    // ⬇️ Fetch previous chat history for the user
+                                    async function loadChatHistory() {
+                                        try {
+                                            const response = await fetch('/get-chat-history/');
+                                            const history = await response.json();
+                                            history.forEach(chat => {
+                                                appendMessage(chat.user_message, 'user');
+                                                appendMessage(chat.ai_response, 'bot');
+                                            });
+                                        } catch (error) {
+                                            console.error('Failed to load chat history:', error);
+                                        }
+                                    }
+
+                                    // ⬇️ Send new message and display AI response
+                                    async function sendMessage() {
+                                        const userInput = document.getElementById('user-input');
+                                        const fileInput = document.getElementById('file-upload');
+                                        const message = userInput.value.trim();
+
+                                        if (message === '' && fileInput.files.length === 0) {
+                                            alert("Please enter a message or upload a file.");
+                                            return;
+                                        }
+
+                                        appendMessage(message, 'user');
+                                        userInput.value = '';
+
+                                        const formData = new FormData();
+                                        formData.append('message', message);
+                                        if (fileInput.files.length > 0) {
+                                            formData.append('uploadedFile', fileInput.files[0]);
+                                        }
+
+                                        appendMessage("Processing... 🔄", 'bot');
+
+                                        try {
+                                            const response = await fetch('/get-response/', {
+                                                method: 'POST',
+                                                body: formData
+                                            });
+
+                                            const data = await response.json();
+                                            document.querySelectorAll('.bot').forEach(msg => {
+                                                if (msg.textContent === 'Processing... 🔄') msg.remove();
+                                            });
+                                            appendMessage(data.response || '⚡ Error: No response from AI.', 'bot');
+                                        } catch (error) {
+                                            appendMessage('❌ Error while fetching response.', 'bot');
+                                        }
+                                    }
+
+                                    document.getElementById('user-input').addEventListener('keypress', function (e) {
+                                        if (e.key === 'Enter') sendMessage();
+                                    });
+
+                                    window.onload = loadChatHistory;
+                                </script>
+                            </div>
+                        </li>
+                        <li class="l-section section">
+                            <div class="about">
+                                <div class="about--banner">
+                                    <h2>We<br>believe in<br>passionate<br>people</h2>
+                                    <a href="#0">Career
+                                        <span>
+                                            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                                                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                viewBox="0 0 150 118" style="enable-background:new 0 0 150 118;"
+                                                xml:space="preserve">
+                                                <g transform="translate(0.000000,118.000000) scale(0.100000,-0.100000)">
+                                                    <path
+                                                        d="M870,1167c-34-17-55-57-46-90c3-15,81-100,194-211l187-185l-565-1c-431,0-571-3-590-13c-55-28-64-94-18-137c21-20,33-20,597-20h575l-192-193C800,103,794,94,849,39c20-20,39-29,61-29c28,0,63,30,298,262c147,144,272,271,279,282c30,51,23,60-219,304C947,1180,926,1196,870,1167z" />
+                                                </g>
+                                            </svg>
+                                        </span>
+                                    </a>
+                                    <img src="{% static 'assets/img/about-visual.png' %}" alt="About Us">
+                                </div>
+                                <div class="about--options">
+                                    <a href="#0">
+                                        <h3>Winners</h3>
+                                    </a>
+                                    <a href="#0">
+                                        <h3>Philosophy</h3>
+                                    </a>
+                                    <a href="#0">
+                                        <h3>History</h3>
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="l-section section">
+                            <div class="contact">
+                                <div class="contact--lockup">
+                                    <div class="modal">
+                                        <div class="modal--information">
+                                            <p>Pawia 5, 31-154 Kraków, Poland</p>
+                                            <a href="mailto:ouremail@gmail.com">ouremail@gmail.com</a>
+                                            <a href="tel:+148126287560">+48 12 628 75 60</a>
+                                        </div>
+                                        <ul class="modal--options">
+                                            <li><a href="#0">Bēhance</a></li>
+                                            <li><a href="#0">dribbble</a></li>
+                                            <li><a href="mailto:ouremail@gmail.com">Contact Us</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="l-section section">
+                            <div class="hire"
+                                style="text-align: center; padding: 40px; background-color: #1e1e2f; border-radius: 15px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);">
+                                <h2 style="color: #fff; font-size: 28px; font-weight: 600;">Thank You</h2>
+                                <p style="color: #ccc; font-size: 16px; margin-bottom: 30px;">You have successfully
+                                    completed your session.</p>
+
+                                <a href="{% url 'logout' %}"
+                                    style="display: inline-block; padding: 12px 30px; background-color: #ffffff; color: #1e1e2f; font-weight: bold; font-size: 16px; border-radius: 30px; text-decoration: none; transition: background-color 0.3s ease;">
+                                    🚪 Logout
+                                </a>
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <ul class="outer-nav">
+            <li class="is-active">Home</li>
+            <li>Works</li>
+            <li>About</li>
+            <li>Contact</li>
+            <li>Logout</li>
+        </ul>
+    </div>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script>
-        // Fetch previous chat history
-        window.onload = async function () {
-            try {
-                const res = await fetch('/get-chat-history/');
-                const chats = await res.json();
-                chats.forEach(chat => {
-                    appendMessage(chat.user_message, 'user');
-                    appendMessage(chat.ai_response, 'bot');
-                });
-            } catch (error) {
-                appendMessage('⚠️ Failed to load previous chats.', 'bot');
-            }
-        };
-
-        function appendMessage(text, sender) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'message ' + sender;
-            messageDiv.textContent = text;
-            document.getElementById('chat-box').appendChild(messageDiv);
-            document.getElementById('chat-box').scrollTop = document.getElementById('chat-box').scrollHeight;
-        }
-
-        async function sendMessage() {
-            const userInput = document.getElementById('user-input');
-            const fileInput = document.getElementById('file-upload');
-            const message = userInput.value.trim();
-
-            if (message === '' && fileInput.files.length === 0) {
-                alert("Please enter a message or upload a file.");
-                return;
-            }
-            appendMessage(message, 'user');
-            userInput.value = '';
-
-            const formData = new FormData();
-            formData.append('message', message);
-            if (fileInput.files.length > 0) formData.append('uploadedFile', fileInput.files[0]);
-            appendMessage("Processing... 🔄", 'bot');
-
-            try {
-                const response = await fetch('/get-response/', { method: 'POST', body: formData });
-                const data = await response.json();
-                document.querySelectorAll('.bot').forEach(msg => { if (msg.textContent === 'Processing... 🔄') msg.remove(); });
-                appendMessage(data.response || '⚡ Error: No response from AI.', 'bot');
-            } catch (error) {
-                appendMessage('❌ Error while fetching response.', 'bot');
-            }
-        }
-
-        document.getElementById('user-input').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') sendMessage();
-        });
+        window.jQuery || document.write("<script src='{% static 'assets/js/vendor/jquery-2.2.4.min.js' %}'><\/script>");
     </script>
+    <script src="{% static 'assets/js/functions-min.js' %}"></script>
+
 </body>
 
 </html>
